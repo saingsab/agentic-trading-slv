@@ -22,8 +22,8 @@ def ingest() -> None:
     """
     conn = db.connect()
     try:
-        n = prices.fetch_prices(conn)
-        print(f"prices: {n} rows")
+        for symbol, n in prices.fetch_all(conn).items():
+            print(f"prices ({symbol}): {n} rows")
 
         n = fred.fetch_all(conn)
         print(f"macro:  {n} rows")

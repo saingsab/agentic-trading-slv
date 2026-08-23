@@ -53,3 +53,19 @@ def test_fetch_prices_raises_on_empty_download(tmp_path):
                 prices.fetch_prices(conn, symbol="SI=F")
     finally:
         conn.close()
+
+
+def test_fetch_all_covers_silver_gold_and_dxy(tmp_path):
+    conn = db.connect(tmp_path / "slv.db")
+    try:
+        with patch("slv.fetch.prices.yf.download", return_value=_fake_ohlcv()):
+            counts = prices.fetch_all(conn)
+        assert counts == {"SI=F": 2, "GC=F": 2, "DX-Y.NYB": 2}
+
+        symbols = {
+            row[0]
+            for row in conn.execute("SELECT DISTINCT symbol FROM prices").fetchall()
+        }
+        assert symbols == {"SI=F", "GC=F", "DX-Y.NYB"}
+    finally:
+        conn.close()

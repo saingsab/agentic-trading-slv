@@ -21,3 +21,10 @@ FRED_API_KEY = os.environ.get("FRED_API_KEY")
 
 # XAG/USD proxy. SI=F is silver futures, not spot — see CLAUDE.md domain notes.
 INSTRUMENT_SYMBOL = "SI=F"
+
+# Auxiliary price series, fetched and stored alongside silver — not traded
+# instruments in their own right, but required inputs to silver's own
+# indicators (gsr in indicators.py) and regime classification (dxy_trend in
+# regime.py). See PLAN.md's data-source table.
+GOLD_SYMBOL = "GC=F"
+DXY_SYMBOL = "DX-Y.NYB"

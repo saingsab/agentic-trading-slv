@@ -11,9 +11,13 @@ import sqlite3
 import pandas as pd
 import yfinance as yf
 
-from slv.config import INSTRUMENT_SYMBOL
+from slv.config import DXY_SYMBOL, GOLD_SYMBOL, INSTRUMENT_SYMBOL
 
 SOURCE = "yfinance"
+
+# Silver itself, plus the two auxiliary series indicators.py/regime.py need
+# (gold for gsr, DXY for dxy_trend) — see config.py.
+PRICE_SYMBOLS = (INSTRUMENT_SYMBOL, GOLD_SYMBOL, DXY_SYMBOL)
 
 
 def fetch_prices(
@@ -62,3 +66,8 @@ def fetch_prices(
     )
     conn.commit()
     return len(rows)
+
+
+def fetch_all(conn: sqlite3.Connection, period: str = "5y") -> dict[str, int]:
+    """Fetch every symbol in PRICE_SYMBOLS. Returns rows-written per symbol."""
+    return {symbol: fetch_prices(conn, symbol=symbol, period=period) for symbol in PRICE_SYMBOLS}
