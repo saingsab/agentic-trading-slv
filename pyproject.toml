@@ -1,0 +1,24 @@
+[project]
+name = "agentic-trading-slv"
+version = "0.1.0"
+description = "Decision-support for discretionary XAG/USD swing trading. Never executes."
+requires-python = ">=3.11"
+dependencies = [
+    "pandas",
+    "numpy",
+    "yfinance",
+    "requests",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+slv = "slv.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["slv*"]
