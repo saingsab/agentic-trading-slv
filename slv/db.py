@@ -86,9 +86,16 @@ CREATE TABLE IF NOT EXISTS theses (
     status TEXT NOT NULL DEFAULT 'open'
 );
 
+-- entry_price is the actual fill (vs. theses.entry_zone, the planned
+-- range), captured here because journal.py's `thesis close` is the first
+-- point you actually know it. r_multiple/process_score/process_detail_json
+-- start NULL and are filled in later by `slv journal score` -- a separate,
+-- deliberately batched step (see PLAN.md's weekly cadence), not computed
+-- automatically at close.
 CREATE TABLE IF NOT EXISTS thesis_outcomes (
     thesis_id INTEGER PRIMARY KEY REFERENCES theses(id),
     closed_at TEXT NOT NULL,
+    entry_price REAL NOT NULL,
     exit_price REAL NOT NULL,
     r_multiple REAL,
     process_score REAL,
@@ -124,15 +131,28 @@ TABLES = (
 )
 
 
+def _migrate(conn: sqlite3.Connection) -> None:
+    """Additive, idempotent patches for tables created under an older
+    schema version. A brand-new DB never touches this -- CREATE TABLE
+    already has every current column, so each check below is a no-op.
+    """
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(thesis_outcomes)")}
+    if columns and "entry_price" not in columns:
+        conn.execute("ALTER TABLE thesis_outcomes ADD COLUMN entry_price REAL")
+
+
 def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
     """Open a connection to slv.db, creating the file and schema if missing.
 
-    Safe to call repeatedly: existing tables are left untouched.
+    Safe to call repeatedly: existing tables are left untouched beyond the
+    additive migrations in _migrate().
     """
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON")
     conn.executescript(SCHEMA)
+    conn.commit()
+    _migrate(conn)
     conn.commit()
     return conn
 

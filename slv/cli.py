@@ -1,7 +1,7 @@
 """Command-line entry point for slv.
 
-Phase 1 added `slv ingest`. Phase 2 adds `slv compute`. Later phases add
-`brief`, `thesis`, and `journal` subcommands.
+Phase 1 added `slv ingest`. Phase 2 added `slv compute`. Phase 3 adds
+`slv thesis open/close` and `slv journal score`. Later phases add `brief`.
 """
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import sys
 
 import pandas as pd
 
-from slv import config, db
+from slv import config, db, journal
 from slv.compute import indicators
 from slv.fetch import calendar, cot, fred, prices
 
@@ -124,11 +124,83 @@ def compute() -> None:
         conn.close()
 
 
+def _cmd_thesis_open(args: argparse.Namespace) -> None:
+    conn = db.connect()
+    try:
+        thesis_id = journal.open_thesis(
+            conn,
+            direction=args.direction,
+            entry_zone=args.entry,
+            invalidation=args.invalidation,
+            target=args.target,
+            size_pct_equity=args.size,
+            leverage=args.leverage,
+            rationale=args.rationale,
+        )
+        print(f"thesis {thesis_id} opened: {args.direction} {args.entry}, "
+              f"invalidation {args.invalidation}, target {args.target}")
+    finally:
+        conn.close()
+
+
+def _cmd_thesis_close(args: argparse.Namespace) -> None:
+    conn = db.connect()
+    try:
+        journal.close_thesis(
+            conn, args.id, entry_price=args.entry, exit_price=args.exit, closed_at=args.closed_at
+        )
+        print(f"thesis {args.id} closed: entry {args.entry}, exit {args.exit}")
+    finally:
+        conn.close()
+
+
+def _cmd_journal_score(args: argparse.Namespace) -> None:
+    conn = db.connect()
+    try:
+        results = journal.score_all_unscored(conn)
+        if not results:
+            print("no unscored closed theses")
+        for r in results:
+            passed = round(r.score * len(journal.RUBRIC_CHECKS))
+            print(
+                f"thesis {r.thesis_id}: R={r.r_multiple:+.2f}  "
+                f"process_score={r.score:.2f} ({passed}/{len(journal.RUBRIC_CHECKS)})"
+            )
+    finally:
+        conn.close()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="slv")
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("ingest", help="fetch raw data (idempotent)")
     subparsers.add_parser("compute", help="rebuild derived indicators from stored prices")
+
+    thesis_parser = subparsers.add_parser("thesis", help="manage theses (immutable once written)")
+    thesis_sub = thesis_parser.add_subparsers(dest="thesis_command", required=True)
+
+    open_parser = thesis_sub.add_parser("open", help="log a new thesis before entry")
+    open_parser.add_argument("--direction", required=True, choices=["long", "short"])
+    open_parser.add_argument(
+        "--entry", required=True, metavar="LOW-HIGH", help="planned entry zone, e.g. 72.50-73.20"
+    )
+    open_parser.add_argument("--invalidation", required=True, type=float)
+    open_parser.add_argument("--target", required=True, type=float)
+    open_parser.add_argument("--size", required=True, type=float, help="position size, %% of equity")
+    open_parser.add_argument("--leverage", required=True, type=float)
+    open_parser.add_argument("--rationale", default=None)
+
+    close_parser = thesis_sub.add_parser("close", help="record a closed trade's outcome")
+    close_parser.add_argument("id", type=int)
+    close_parser.add_argument("--entry", required=True, type=float, help="actual fill price")
+    close_parser.add_argument("--exit", required=True, type=float)
+    close_parser.add_argument(
+        "--closed-at", dest="closed_at", default=None, help="ISO timestamp; defaults to now"
+    )
+
+    journal_parser = subparsers.add_parser("journal", help="score closed theses")
+    journal_sub = journal_parser.add_subparsers(dest="journal_command", required=True)
+    journal_sub.add_parser("score", help="grade every unscored closed thesis on process, not P&L")
 
     args = parser.parse_args(argv)
 
@@ -136,6 +208,14 @@ def main(argv: list[str] | None = None) -> int:
         ingest()
     elif args.command == "compute":
         compute()
+    elif args.command == "thesis":
+        if args.thesis_command == "open":
+            _cmd_thesis_open(args)
+        elif args.thesis_command == "close":
+            _cmd_thesis_close(args)
+    elif args.command == "journal":
+        if args.journal_command == "score":
+            _cmd_journal_score(args)
 
     return 0
 
