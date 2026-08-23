@@ -1,7 +1,7 @@
 """Command-line entry point for slv.
 
-Phase 1 added `slv ingest`. Phase 2 added `slv compute`. Phase 3 adds
-`slv thesis open/close` and `slv journal score`. Later phases add `brief`.
+Phase 1 added `slv ingest`. Phase 2 added `slv compute`. Phase 3 added
+`slv thesis open/close` and `slv journal score`. Phase 4 adds `slv brief`.
 """
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ import sys
 
 import pandas as pd
 
+from slv import brief as brief_module
 from slv import config, db, journal
 from slv.compute import indicators
 from slv.fetch import calendar, cot, fred, prices
@@ -72,6 +73,37 @@ def _sql_value(x: float) -> float | None:
     return float(x)
 
 
+def _compute_indicators_df(conn) -> pd.DataFrame:
+    """Pure-ish assembly of the indicators DataFrame from stored prices --
+    split out from compute() so tests can populate a temp DB's indicators
+    table the same way `slv compute` does, without going through the CLI.
+    """
+    silver = _read_prices(conn, config.INSTRUMENT_SYMBOL)
+    if silver.empty:
+        raise RuntimeError(f"no price data for {config.INSTRUMENT_SYMBOL!r}; run `slv ingest` first")
+    gold = _read_prices(conn, config.GOLD_SYMBOL)
+
+    close, high, low = silver["close"], silver["high"], silver["low"]
+    atr = indicators.atr14(high, low, close)
+    ema20 = indicators.ema20(close)
+
+    return pd.DataFrame(
+        {
+            "atr14": atr,
+            "ema20": ema20,
+            "ema50": indicators.ema50(close),
+            "sma200": indicators.sma200(close),
+            "rsi14": indicators.rsi14(close),
+            "rvol20": indicators.rvol20(close),
+            # gold's dates can differ slightly from silver's (holiday
+            # calendars) -- align to silver's index, NaN where missing.
+            "gsr": indicators.gsr(gold["close"].reindex(close.index), close),
+            "dist_ema20_atr": indicators.dist_ema20_atr(close, ema20, atr),
+            "range_pctile_60d": indicators.range_pctile_60d(high, low, close),
+        }
+    )
+
+
 def compute() -> None:
     """Rebuild the indicators table from scratch out of stored prices.
 
@@ -80,33 +112,7 @@ def compute() -> None:
     """
     conn = db.connect()
     try:
-        silver = _read_prices(conn, config.INSTRUMENT_SYMBOL)
-        if silver.empty:
-            raise RuntimeError(
-                f"no price data for {config.INSTRUMENT_SYMBOL!r}; run `slv ingest` first"
-            )
-        gold = _read_prices(conn, config.GOLD_SYMBOL)
-
-        close, high, low = silver["close"], silver["high"], silver["low"]
-        atr = indicators.atr14(high, low, close)
-        ema20 = indicators.ema20(close)
-
-        out = pd.DataFrame(
-            {
-                "atr14": atr,
-                "ema20": ema20,
-                "ema50": indicators.ema50(close),
-                "sma200": indicators.sma200(close),
-                "rsi14": indicators.rsi14(close),
-                "rvol20": indicators.rvol20(close),
-                # gold's dates can differ slightly from silver's (holiday
-                # calendars) -- align to silver's index, NaN where missing.
-                "gsr": indicators.gsr(gold["close"].reindex(close.index), close),
-                "dist_ema20_atr": indicators.dist_ema20_atr(close, ema20, atr),
-                "range_pctile_60d": indicators.range_pctile_60d(high, low, close),
-            }
-        )
-
+        out = _compute_indicators_df(conn)
         rows = [
             (date,) + tuple(_sql_value(v) for v in row)
             for date, row in zip(out.index, out.itertuples(index=False))
@@ -170,11 +176,22 @@ def _cmd_journal_score(args: argparse.Namespace) -> None:
         conn.close()
 
 
+def brief() -> None:
+    """Assemble today's facts and write a dated markdown brief to briefs/."""
+    conn = db.connect()
+    try:
+        path = brief_module.write_brief(conn)
+        print(f"brief written: {path}")
+    finally:
+        conn.close()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="slv")
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("ingest", help="fetch raw data (idempotent)")
     subparsers.add_parser("compute", help="rebuild derived indicators from stored prices")
+    subparsers.add_parser("brief", help="write today's brief to briefs/")
 
     thesis_parser = subparsers.add_parser("thesis", help="manage theses (immutable once written)")
     thesis_sub = thesis_parser.add_subparsers(dest="thesis_command", required=True)
@@ -208,6 +225,8 @@ def main(argv: list[str] | None = None) -> int:
         ingest()
     elif args.command == "compute":
         compute()
+    elif args.command == "brief":
+        brief()
     elif args.command == "thesis":
         if args.thesis_command == "open":
             _cmd_thesis_open(args)

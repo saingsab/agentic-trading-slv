@@ -1,5 +1,6 @@
 .venv/
 data/*.db
+briefs/*.md
 .env
 __pycache__/
 *.egg-info/

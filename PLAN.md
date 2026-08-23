@@ -58,7 +58,7 @@ agentic-trading-slv/
 │   ├── slv.db              # SQLite
 │   └── calendar_seed.csv  # FOMC/CPI/NFP dates
 ├── tests/
-├── briefs/                # dated markdown output, git-tracked
+├── briefs/                # dated markdown output, gitignored (regenerable via `slv brief`)
 └── PLAN.md
 ```
 
