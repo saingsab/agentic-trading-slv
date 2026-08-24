@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!-- frame-runtime --><!-- base href="https://513263a9-ce4b-4146-9bd5-6e6efceabe48.frame.claudeusercontent.com/_f/1787553753-be33/" --><script>window.__FRAME_PREAMBLE={"capabilities":{"artifact":"artifact.oqIe8shs.js","assets":"assets.BkxVItX2.js","comments":"comments.GLuHR3zP.js","db":"db.CRhVHzSt.js","downloads":"downloads.C3GSvEDP.js","embed":"embed.CZsbekoQ.js","mcp":"mcp.D3B2EyQu.js","permissions":"permissions.BNySkLV5.js","room":"room.DE7EMui-.js","sample":"sample.C7z_6W62.js","self":"artifact.oqIe8shs.js","user":"user.BpKav-Rf.js"},"transforms":"_transforms.h3_8GSUa.js","comments":"_comments.BOgkE6qU.js","translate":"_translate.5HCW4BJh.js"}</script><script>(function(){"use strict";var Y=["light","dark","system"],X=/^[A-Za-z0-9_-]{1,64}$/,D=/^[a-zA-Z_:][a-zA-Z0-9_:.-]{0,127}$/,G=new Set(["class","hidden","value","checked"]);function V(e){const t=e.toLowerCase();return t.startsWith("data-")||t.startsWith("aria-")||G.has(t)}var be="http://www.w3.org/1999/xhtml",Z="http://www.w3.org/2000/svg",J=new Set(["script","style","iframe","noscript","noframes","noembed","xmp","plaintext","template","title","textarea","object","embed"]),Q=new Set(["script","style"]);function ee(e){const t=e.localName.toLowerCase();return e.namespaceURI==="http://www.w3.org/1999/xhtml"?!J.has(t):e.namespaceURI===Z?!Q.has(t):!1}var te=new Set(["html","head","body","frameset"]);function re(e){return e.namespaceURI==="http://www.w3.org/1999/xhtml"&&te.has(e.localName)}function ne(e){if(e===null||typeof e!="object")return!1;const t=e;if(typeof t.target!="string"||!X.test(t.target)||t.text!==void 0&&typeof t.text!="string")return!1;if(t.attrsSet!==void 0){if(t.attrsSet===null||typeof t.attrsSet!="object")return!1;for(const[n,s]of Object.entries(t.attrsSet))if(!D.test(n)||typeof s!="string")return!1}if(t.attrsRemoved!==void 0){if(!Array.isArray(t.attrsRemoved))return!1;for(const n of t.attrsRemoved)if(typeof n!="string"||!D.test(n))return!1}return!0}function se(e,t){if(e===null||typeof e!="object")return!1;const{seq:n,elements:s}=e;if(typeof n!="number"||!Number.isSafeInteger(n)||!Array.isArray(s)||s.length===0||s.length>64)return!1;for(let o=0;o<s.length;o++)if(!t(s[o]))return!1;return!0}function ae(e){return e===null||typeof e!="object"?!1:se(e.__frame_patch,ne)}function oe(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_init;return t!==null&&typeof t=="object"}function ie(e){return e!==null&&typeof e=="object"&&e.__frame_size_poke===!0}function le(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_theme;if(t===null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&Y.includes(n)}var O="__frame_scroll",ce=150,ue=310,fe=160,pe=3e4;function de(){let e=0,t=!1,n=!1,s=!1,o=0,l=null;const c=i=>{try{sessionStorage.setItem(O,JSON.stringify({y:i}))}catch{}},f=()=>{if(clearTimeout(e),l===null)return;const i=l;l=null,c(i)},S=()=>{if(t){t=!1;return}n=!0,l=scrollY,clearTimeout(e),e=setTimeout(f,ce)};try{addEventListener("scroll",S,{passive:!0}),addEventListener("pagehide",f)}catch{}const v=()=>{let i;try{i=sessionStorage.getItem(O)}catch{return null}if(i===null)return null;let d;try{d=JSON.parse(i)}catch{d=null}const u=d?.y;if(!(typeof u=="number"&&Number.isFinite(u)&&u>=0)){try{sessionStorage.removeItem(O)}catch{}return null}return u};let b=!1;const m=i=>{try{const d=scrollY;scrollTo({top:i,left:0,behavior:"instant"}),o=i,s=!0,clearTimeout(e),l=null,c(i);const u=scrollY;u!==d&&(t=!0),u!==i&&!b&&(b=!0,addEventListener("load",()=>{try{if(scrollY===u){const h=v();m(h!==null?h:o)}}catch{}},{once:!0}))}catch{}},y=()=>{try{return!!location.hash}catch{return!0}};let g=!1;const E=()=>{try{if(g||innerWidth>ue||innerHeight>fe)return;g=!0;const i=Date.now(),d=()=>{try{removeEventListener("resize",d)}catch{}if(Date.now()-i>pe||n||y())return;const u=v();m(u!==null?u:o)};addEventListener("resize",d)}catch{}};let r=!1,p=!1;return{restore(){if(r||(r=!0,y()))return;const i=v();i!==null&&(m(i),E())},promoted(){if(p||(p=!0,y()))return;const i=v();i!==null?(m(i),E()):s&&m(o)}}}var Ee="modulepreload",Ae=function(e){return"/"+e},Re={},me=function(t,n,s){let o=Promise.resolve();function l(c){const f=new Event("vite:preloadError",{cancelable:!0});if(f.payload=c,window.dispatchEvent(f),!f.defaultPrevented)throw c}return o.then(c=>{for(const f of c||[])f.status==="rejected"&&l(f.reason);return t().catch(l)})};(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let s=0;for(let o=0;o<n.length;o++){const l=n[o];try{e(t,l,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[l]}catch{}try{e(t,l,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[l]=="function"&&s++}if(s&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:s},"*")}catch{}})();var he=1e4,_e=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function F(e){for(const t of _e)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}var M=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities}),j=window.__FRAME_PREAMBLE?.transforms,N=window.__FRAME_PREAMBLE?.comments,I=window.__FRAME_PREAMBLE?.translate,L=/^[\w.-]+\.js$/;function T(e){return me(()=>import("/_runtime/"+e),void 0)}function z(e,t){return{contract:e.contract,changes:new Set(e.changes??[]),flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:new Map,shellOrigin:t,mount:W,pipe:()=>({wrap:(n,s)=>(...o)=>{try{return s(...o)}catch(l){return Promise.reject(l)}}})}}var P=null,w=null;function q(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}var B=!1;function ve(e,t){const n=[];for(const s of e.elements){const o=document.querySelector(`[data-id="${s.target}"]`);if(!o){parent.postMessage({__frame_patch_miss:{seq:e.seq}},t);return}if([...Object.keys(s.attrsSet??{}),...s.attrsRemoved??[]].some(l=>!V(l))){parent.postMessage({__frame_patch_miss:{seq:e.seq}},t);return}if(s.text!==void 0&&(!ee(o)||re(o))){parent.postMessage({__frame_patch_miss:{seq:e.seq}},t);return}for(const[l,c]of Object.entries(s.attrsSet??{}))if(!$(o,l)){try{o.setAttribute(l,c)}catch{}H(o,l,c)}for(const l of s.attrsRemoved??[])$(o,l)||(o.removeAttribute(l),H(o,l,null));typeof s.text=="string"&&(o.textContent=s.text),n.push(s.target)}try{document.dispatchEvent(new CustomEvent("claude:edit",{detail:{seq:e.seq,targets:n}}))}catch{}}function H(e,t,n){if(!(e instanceof HTMLInputElement))return;const s=t.toLowerCase();s==="checked"?e.checked=n!==null:s==="value"&&e.type!=="file"&&(e.value=n??"")}function $(e,t){const n=t.toLowerCase(),s=e;return n==="data-id"||(n==="value"||n==="checked")&&(s.__artifactSecret===!0||/^(password|hidden|file)$/.test(s.type??"")||/(^|\s)(cc-|one-time-code|current-password|new-password)/i.test(`${e.getAttribute("autocomplete")??""} ${s.autocomplete??""}`))}function K(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,B=!0):B&&(delete t.dataset.theme,t.style.colorScheme="",B=!1)}var R=new Map;function ye(){let e;const t={u:new Promise(n=>{e=n}),r:n=>{t.done=!0,e(n)},done:!1,nulled:!1};return t}var ge=Object.freeze(Object.assign(Object.create(null),{call:Function.prototype.call,apply:Function.prototype.apply,bind:Function.prototype.bind})),W=(e,t)=>{const n=R.get(e);if(!n||n.done){n?.nulled&&w&&parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:e}},w);return}const s=typeof t=="function"?Object.setPrototypeOf(t,ge):Object.assign(Object.create(null),t);typeof s.then=="function"&&delete s.then,n.r(Object.freeze(s))},U=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(U&&U.writable===!1)){const e=j&&L.test(j)?T(j).catch(()=>{}):Promise.resolve(void 0),t=r=>{if(r.type==="auxclick"&&r.button!==1)return;const p=r.target,i=p&&p.closest?p.closest("a[href],area[href]"):null;if(!i)return;const d=i.getAttribute("href");if(!d)return;let u,h;try{u=new URL(d,document.baseURI),h=new URL(document.baseURI).origin}catch{return}if((u.protocol==="http:"||u.protocol==="https:")&&u.origin!==h){r.preventDefault();const _=(i.getAttribute("target")??"").toLowerCase(),C=r.type==="auxclick"||r.metaKey||r.ctrlKey||r.shiftKey||r.altKey||!["","_self","_top","_parent"].includes(_);parent.postMessage({__frame_nav:!0,url:u.href,newTab:C},"*")}};addEventListener("click",t,!0),addEventListener("auxclick",t,!0);const n={},s=r=>{r.isTrusted&&(n.pointer=!0)},o=r=>{r.isTrusted&&(n.click=!0)};addEventListener("pointermove",s,{capture:!0,passive:!0}),addEventListener("click",o,{capture:!0,passive:!0}),e.then(r=>{r?.wireNav&&(r.wireNav(),removeEventListener("click",t,!0),removeEventListener("auxclick",t,!0),removeEventListener("pointermove",s,!0),removeEventListener("click",o,!0),r.wireEngagement?.(n))});let l=null;try{l=de()}catch{}const c=U?.value??{};q(window,"claude",c);for(const r of Object.keys(M)){if(c[r]!==void 0){q(c,r,c[r]);continue}R.set(r,ye())}if(c.use===void 0){const r=p=>{if(typeof p!="string"||!Object.hasOwn(M,p))return Promise.resolve(null);const i=R.get(p);return i?i.u:Promise.resolve(c[p]??null)};try{Object.defineProperty(c,"use",{value:r,writable:!0,configurable:!0,enumerable:!1})}catch{}}let f=null,S=null,v=0;const b=r=>{r.source!==parent||!F(r.origin)||oe(r.data)&&(f=r.data.__frame_init,w=r.origin,removeEventListener("message",b),clearTimeout(v),S?.())};addEventListener("message",b),parent.postMessage({__frame_connect:!0},"*");const m=new Promise(r=>{S=r,v=setTimeout(()=>{removeEventListener("message",b),r()},he)}),y=document.readyState==="loading"?new Promise(r=>document.addEventListener("DOMContentLoaded",()=>r(),{once:!0})):Promise.resolve();y.then(()=>{try{l?.restore()}catch{}});const g={cb:null},E=r=>{if(!(r.source!==parent||!F(r.origin))&&ie(r.data)){try{l?.promoted()}catch{}g.cb?.()}};addEventListener("message",E),m.then(async()=>{if(!f||!w){for(const a of R.values())a.nulled=!0,a.r(null);return}K(f.theme);const r=w;let p=!1,i=!1;addEventListener("message",a=>{if(a.source!==parent||a.origin!==r)return;le(a.data)&&K(a.data.__frame_theme.theme),ae(a.data)&&ve(a.data.__frame_patch,r);const k=a.data?.__fc_mode;k&&typeof k=="object"&&!p&&N&&L.test(N)&&(p=!0,T(N).then(x=>x.install?.(r,k.on===!0)).catch(()=>{}));const A=a.data?.__ft_cmd;A&&typeof A=="object"&&!i&&I&&L.test(I)&&(i=!0,T(I).then(x=>x.install?.(r,A)).catch(()=>{}))});const d=Object.keys(f.capabilities??{}).filter(a=>Object.hasOwn(M,a)).map(a=>[a,M[a]]).filter(a=>typeof a[1]=="string"&&L.test(a[1])),u=await Promise.allSettled(d.map(([,a])=>T(a))),h=await e,_=w;if(h?.buildBoot||parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:"_transforms"}},_),h?.buildBoot)try{P=h.buildBoot(f,h.TRANSFORMS??{},{shellOrigin:_,mount:W},a=>parent.postMessage({__frame_cap_telemetry:a},_))}catch{parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:"_transforms"}},_),P=z(f,_)}else P=z(f,_);const C=a=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:a}},_),we=P;u.forEach((a,k)=>{const A=d[k][0];if(a.status!=="fulfilled"){C(A);return}try{a.value?.install?.(we)}catch{C(A)}});for(const a of R.values())a.done||(a.nulled=!0,a.r(null));await y,parent.postMessage({__frame_ready:!0},w),e.then(a=>a?.installSizeReporter?.(_,g))})}})();</script><!-- /frame-runtime --><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Silver Desk Manual</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap');
+
+  :root {
+    --ink: #1D2426;
+    --ink-soft: #4B5658;
+    --paper: #F0F2F1;
+    --paper-raised: #FFFFFF;
+    --accent: #2D6E71;
+    --accent-strong: #1F4F52;
+    --accent-soft: #DCEBEA;
+    --good: #3F6E46;
+    --risk: #A44A3C;
+    --line: #C9CFCE;
+    --line-soft: #DDE2E1;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #E7EAE9;
+      --ink-soft: #A9B3B1;
+      --paper: #13181A;
+      --paper-raised: #1B2123;
+      --accent: #62B3AE;
+      --accent-strong: #8FCCC8;
+      --accent-soft: #1E3536;
+      --good: #7CB584;
+      --risk: #D6897A;
+      --line: #2B3335;
+      --line-soft: #232B2D;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #E7EAE9;
+    --ink-soft: #A9B3B1;
+    --paper: #13181A;
+    --paper-raised: #1B2123;
+    --accent: #62B3AE;
+    --accent-strong: #8FCCC8;
+    --accent-soft: #1E3536;
+    --good: #7CB584;
+    --risk: #D6897A;
+    --line: #2B3335;
+    --line-soft: #232B2D;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.65;
+    margin: 0;
+    padding: 0 24px 120px;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .wide {
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ---- masthead ---- */
+  .masthead {
+    padding: 72px 0 40px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 56px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 14px;
+  }
+  h1.title {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: clamp(30px, 5vw, 42px);
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .tagline {
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin: 0 0 24px;
+    text-wrap: balance;
+  }
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 6px 12px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .badge.never {
+    border-color: var(--risk);
+    color: var(--risk);
+    font-weight: 600;
+  }
+
+  /* ---- prose ---- */
+  h2 {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  h3 {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    margin: 28px 0 8px;
+  }
+  p { margin: 0 0 16px; color: var(--ink); }
+  p.lede { color: var(--ink-soft); font-size: 16px; margin-bottom: 28px; }
+  strong { color: var(--ink); font-weight: 600; }
+  a { color: var(--accent-strong); text-decoration-color: var(--accent-soft); text-underline-offset: 2px; }
+  a:hover { text-decoration-color: currentColor; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.87em;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+  }
+
+  /* ---- step blocks ---- */
+  .step {
+    position: relative;
+    padding: 8px 0 8px 24px;
+    margin: 0 0 44px;
+    border-left: 2px solid var(--line);
+  }
+  .step .eyebrow { margin-bottom: 8px; }
+  .step h2 { margin-bottom: 10px; }
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 14px 18px;
+    border-radius: 0 4px 4px 0;
+    margin: 20px 0;
+    font-size: 15.5px;
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .warn {
+    border-left-color: var(--risk);
+    background: color-mix(in srgb, var(--risk) 10%, var(--paper-raised));
+  }
+  .warn .label { color: var(--risk); }
+
+  /* ---- code panels ---- */
+  .panel-wrap { margin: 16px 0 24px; }
+  pre.cmd {
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    background: var(--ink);
+    color: #D7E4E2;
+    padding: 16px 18px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) pre.cmd { background: #0B0E0F; border: 1px solid var(--line); }
+  }
+  :root[data-theme="dark"] pre.cmd { background: #0B0E0F; border: 1px solid var(--line); }
+  pre.cmd .prompt { color: #6E8E8C; user-select: none; }
+  pre.cmd .comment { color: #6E8E8C; font-style: italic; }
+  .panel-caption {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 8px 2px 0;
+    letter-spacing: 0.01em;
+  }
+
+  .out {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    background: var(--paper-raised);
+    border: 1px solid var(--line-soft);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-top: 8px;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ---- rubric mini table ---- */
+  .rubric { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; }
+  .rubric li {
+    font-size: 14.5px;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .rubric .mark { font-family: var(--mono); color: var(--good); font-weight: 600; flex-shrink: 0; width: 1.2em; }
+
+  /* ---- reference table ---- */
+  .ref-section { margin-top: 64px; padding-top: 8px; border-top: 1px solid var(--line); }
+  .table-wrap { overflow-x: auto; margin: 18px 0 8px; border: 1px solid var(--line-soft); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14px; }
+  thead th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--paper-raised);
+    border-bottom: 1px solid var(--line);
+  }
+  tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.cmd-cell { font-family: var(--mono); font-size: 13px; color: var(--accent-strong); white-space: nowrap; }
+  td.when-cell { color: var(--ink-soft); font-size: 13.5px; }
+
+  /* ---- faq ---- */
+  .faq-item { margin: 0 0 22px; }
+  .faq-q {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .faq-q::before { content: "Q. "; color: var(--accent); }
+  .faq-a { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  ::selection { background: var(--accent-soft); color: var(--accent-strong); }
+</style>
+
+<div class="page">
+
+  <div class="masthead">
+    <p class="eyebrow">slv · onboarding</p>
+    <h1 class="title">Silver Desk Manual</h1>
+    <p class="tagline">A field guide to the XAG/USD decision-support system — for whoever sits down at this desk next.</p>
+    <div class="badge-row">
+      <span class="badge">reads · computes · verifies · proposes</span>
+      <span class="badge never">never executes a trade</span>
+    </div>
+  </div>
+
+  <p class="lede">This system doesn't predict silver's price and it 
+doesn't place orders. What it does: keep a clean, deterministic record 
+of what the market is doing, and hold you to a fixed discipline about 
+what you said you'd do before you did it. Everything below assumes 
+you're sitting at a terminal in the project folder with the virtual 
+environment active.</p>
+
+  <div class="note">
+    <span class="label">Before anything else</span>
+    <p>Activate the environment and make sure your FRED key is set — almost every command below depends on data that <code>slv ingest</code> pulls in.</p>
+  </div>
+  <div class="panel-wrap">
+    <pre class="cmd"><span class="comment"># once per new terminal</span>
+<span class="prompt">$</span> source .venv/bin/activate
+<span class="prompt">$</span> export FRED_API_KEY=&lt;your key&gt;</pre>
+  </div>
+
+  <!-- STEP 01 -->
+  <div class="step">
+    <p class="eyebrow">Step 01 · every morning</p>
+    <h2>Bring the desk up to date</h2>
+    <p>Three commands, run in order, every day you're paying attention 
+to the market — whether or not you're in a trade. Nothing after this 
+step works on stale data.</p>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> slv ingest    <span class="comment"># pull prices, macro, COT, calendar (safe to re-run)</span>
+<span class="prompt">$</span> slv compute   <span class="comment"># rebuild ATR, EMA, RSI, GSR, etc. from stored prices</span>
+<span class="prompt">$</span> slv brief     <span class="comment"># write today's read to briefs/</span></pre>
+    </div>
+    <p><code>slv brief</code> writes a dated markdown file to <code>briefs/</code>
+ — open the newest one and you'll see the day's indicators, the current 
+regime, and anything scheduled (CPI, NFP, FOMC) in the next two weeks, 
+with the historical move each one has tended to produce.</p>
+  </div>
+
+  <!-- STEP 02 -->
+  <div class="step">
+    <p class="eyebrow">Step 02 · the moment you see a setup</p>
+    <h2>Write the thesis down — before you enter</h2>
+    <p>This is the one rule the whole system exists to enforce: <strong>the record comes first.</strong> Not after you've entered, not after you've decided it worked. Before.</p>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> slv thesis open \
+    --direction long \
+    --entry 68.00-69.00 \
+    --invalidation 65.80 \
+    --target 74.00 \
+    --size 8 \
+    --leverage 3 \
+    --rationale "pullback to EMA20, RSI cooling off overbought"</pre>
+    </div>
+    <table style="width:100%; font-size: 14px; border-collapse: collapse; margin: 4px 0 16px;">
+      <tbody>
+        <tr><td style="padding:4px 12px 4px 0; color:var(--ink-soft); font-family:var(--mono); white-space:nowrap;">--direction</td><td style="padding:4px 0;">long or short</td></tr>
+        <tr><td style="padding:4px 12px 4px 0; color:var(--ink-soft); font-family:var(--mono); white-space:nowrap;">--entry</td><td style="padding:4px 0;">the price range you're planning to fill in, low–high</td></tr>
+        <tr><td style="padding:4px 12px 4px 0; color:var(--ink-soft); font-family:var(--mono); white-space:nowrap;">--invalidation</td><td style="padding:4px 0;">the price that proves you wrong — your stop</td></tr>
+        <tr><td style="padding:4px 12px 4px 0; color:var(--ink-soft); font-family:var(--mono); white-space:nowrap;">--size / --leverage</td><td style="padding:4px 0;">% of equity risked, and the leverage on it</td></tr>
+      </tbody>
+    </table>
+    <div class="note warn">
+      <span class="label">There is no edit or delete</span>
+      <p>Once a thesis is written, it's permanent. Got a number wrong? 
+You don't fix it — you write a new one. That's deliberate: it's what 
+makes the record trustworthy later, including to you.</p>
+    </div>
+  </div>
+
+  <!-- STEP 03 -->
+  <div class="step">
+    <p class="eyebrow">Step 03 · whenever the trade actually ends</p>
+    <h2>Close it out</h2>
+    <p>Could be two days later, could be six weeks — whenever price 
+actually hits your stop, your target, or you decide to get out. Record 
+what really happened, not what you planned.</p>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> slv thesis close 1 --entry 68.50 --exit 71.00</pre>
+    </div>
+    <p><code>--entry</code> is what you actually paid; <code>--exit</code> is what you actually got. Nothing gets scored yet — this step just writes down the raw facts.</p>
+  </div>
+
+  <!-- STEP 04 -->
+  <div class="step">
+    <p class="eyebrow">Step 04 · every Saturday</p>
+    <h2>Score the week, not the P&amp;L</h2>
+    <p>One command, run weekly, grades every trade that's been closed 
+since you last ran it — against five fixed checks, none of which care 
+whether you made money.</p>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> slv journal score</pre>
+      <div class="out">thesis 1: R=+0.83  process_score=1.00 (5/5)</div>
+    </div>
+    <ul class="rubric">
+      <li><span class="mark">✓</span> <strong>Falsifiable</strong> — you named a real price that proves you wrong</li>
+      <li><span class="mark">✓</span> <strong>Sized</strong> — your position respected event risk in the holding window</li>
+      <li><span class="mark">✓</span> <strong>Honored</strong> — you exited at or before your stated stop</li>
+      <li><span class="mark">✓</span> <strong>In-condition</strong> — your actual fill was inside your planned zone</li>
+      <li><span class="mark">✓</span> <strong>Pre-committed</strong> — the thesis existed before the trade did</li>
+    </ul>
+    <p style="margin-top:14px;">A trade that loses money can still score
+ 5/5 if you did everything right. A trade that makes money can score low
+ if you skipped the stop or sized in blind. That gap is the entire point
+ — it's what tells you whether <em>you're</em> improving, separate from whether the market cooperated.</p>
+  </div>
+
+  <!-- STEP 05 -->
+  <div class="step">
+    <p class="eyebrow">Step 05 · before you trust an idea with size</p>
+    <h2>Backtest it first</h2>
+    <p>A rule is a written-down version of a setup — conditions, a stop,
+ a target — tested automatically against years of history instead of 
+your memory of a few recent trades.</p>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> slv backtest run rules/pullback_ema20_long.json</pre>
+      <div class="out">train (walk-forward, 8 folds): n=71  expectancy=-0.02R  median=-0.77R  stdev=1.22  range=[-1.17R, +2.00R]
+holdout: sealed (not evaluated) -- pass --unlock-holdout --reason '...' to touch it</div>
+    </div>
+    <p>Notice <code>holdout</code> stays sealed. The most recent fifth 
+of history is locked away on purpose — it's the one honest check you get
+ on whether a rule actually works, and it only stays honest if you don't
+ peek at it every time you tweak a number. Unlocking it is meant to be 
+rare, deliberate, and logged:</p>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> slv backtest run rules/pullback_ema20_long.json \
+    --unlock-holdout --reason "final check before sizing up"</pre>
+    </div>
+  </div>
+
+  <!-- STEP 06 -->
+  <div class="step" style="border-left-color: var(--line);">
+    <p class="eyebrow">Optional · anytime</p>
+    <h2>Ask, instead of scrolling</h2>
+    <p>Two ways to ask a question and get an answer grounded in your real, computed data — not a guess.</p>
+    <h3>From this terminal</h3>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> slv agent ask "What did the last three pullback-to-EMA20 \
+    theses look like, and how did they score?"</pre>
+    </div>
+    <p>Runs a small local model in a sandboxed container — it can only 
+read your indicators, your regime state, and your journal. It has no way
+ to reach the sealed holdout, and no way to place a trade.</p>
+    <h3>From inside Claude Code</h3>
+    <p>Just ask, in plain language — <em>"what's silver's RSI right now"</em> or <em>"show me my open theses."</em> The project is already wired up to answer from your real database instead of searching the web.</p>
+  </div>
+
+  <!-- REFERENCE -->
+  <div class="ref-section">
+    <p class="eyebrow">Quick reference</p>
+    <h2>Every command, at a glance</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Command</th><th>What it does</th><th>Run it…</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="cmd-cell">slv ingest</td><td>Pulls prices, macro, COT, calendar</td><td class="when-cell">Every morning</td></tr>
+          <tr><td class="cmd-cell">slv compute</td><td>Rebuilds indicators from stored prices</td><td class="when-cell">Every morning, after ingest</td></tr>
+          <tr><td class="cmd-cell">slv brief</td><td>Writes today's dated read to briefs/</td><td class="when-cell">Every morning, after compute</td></tr>
+          <tr><td class="cmd-cell">slv thesis open</td><td>Logs a trade plan — permanent once written</td><td class="when-cell">The moment you see a setup</td></tr>
+          <tr><td class="cmd-cell">slv thesis close &lt;id&gt;</td><td>Records the real entry &amp; exit</td><td class="when-cell">Whenever that trade ends</td></tr>
+          <tr><td class="cmd-cell">slv journal score</td><td>Grades every closed, unscored thesis</td><td class="when-cell">Weekly (Saturday)</td></tr>
+          <tr><td class="cmd-cell">slv backtest run &lt;rule&gt;</td><td>Walk-forward tests a rule on train data</td><td class="when-cell">Before trusting an idea with size</td></tr>
+          <tr><td class="cmd-cell">slv agent ask "…"</td><td>Answers a question via sandboxed tool calls</td><td class="when-cell">Anytime</td></tr>
+          <tr><td class="cmd-cell">slv mcp</td><td>Serves your data to Claude Code directly</td><td class="when-cell">Runs automatically in this project</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="ref-section">
+    <p class="eyebrow">When something looks wrong</p>
+    <h2>Common snags</h2>
+
+    <div class="faq-item">
+      <p class="faq-q">slv ingest fails with "FRED_API_KEY is not set"</p>
+      <p class="faq-a">Expected, not a bug — the key only lives in your current shell. Run <code>export FRED_API_KEY=&lt;your key&gt;</code> again, or add it to your shell profile so it survives new terminals.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">slv journal score prints nothing</p>
+      <p class="faq-a">Means there's nothing new to grade — every closed
+ thesis is already scored, or nothing's been closed since last time. Not
+ an error.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">A backtest says "not reportable"</p>
+      <p class="faq-a">Fewer than 20 trades came out of the walk-forward
+ run. The system refuses to show an expectancy number built on too small
+ a sample rather than show you something precise-looking and misleading.
+ Loosen the rule's conditions or widen the date range and try again.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">I opened a thesis just to try the command — can I undo it?</p>
+      <p class="faq-a">Not by editing it — that's by design. If it was 
+only a test, the whole database can be rebuilt clean from scratch 
+(nothing in it besides your journal and backtest history is 
+irreplaceable):</p>
+    </div>
+    <div class="panel-wrap">
+      <pre class="cmd"><span class="prompt">$</span> rm data/slv.db
+<span class="prompt">$</span> slv ingest &amp;&amp; slv compute</pre>
+    </div>
+  </div>
+
+  <footer>
+    slv · XAG/USD decision-support · reads, computes, verifies, proposes — never executes
+  </footer>
+
+</div>
+
+</body></html>
