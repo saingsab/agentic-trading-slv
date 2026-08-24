@@ -198,6 +198,14 @@ def _cmd_agent_ask(args: argparse.Namespace) -> None:
     print(ask(args.question, sandbox=not args.no_sandbox))
 
 
+def _cmd_mcp() -> None:
+    # Lazy import: `mcp` is the optional `mcp` extra (Phase 7 only) --
+    # every other command must keep working without it installed.
+    from slv.mcp_server import main as run_mcp_server
+
+    run_mcp_server()
+
+
 def _print_metrics(label: str, m: dict) -> None:
     if not m["reportable"]:
         print(f"{label}: only {m['n_trades']} trades (need >= {m['min_trades']}) -- not reportable")
@@ -287,6 +295,10 @@ def main(argv: list[str] | None = None) -> int:
         "--reason", default=None, help="required with --unlock-holdout; why you're touching holdout now"
     )
 
+    subparsers.add_parser(
+        "mcp", help="run the MCP server (get_indicators/get_regime/search_journal) over stdio"
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "ingest":
@@ -309,6 +321,8 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "backtest":
         if args.backtest_command == "run":
             _cmd_backtest_run(args)
+    elif args.command == "mcp":
+        _cmd_mcp()
 
     return 0
 
