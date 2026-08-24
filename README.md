@@ -109,16 +109,16 @@ slv journal score        # grade closed theses on process
 
 ## Status
 
-| Phase | Status |
-|---|--------|
-| 0 — Skeleton |        |
-| 1 — Data layer |        |
-| 2 — Compute layer |     |
-| 3 — Journal |        |
-| 4 — Brief assembly |  |
-| 5 — Agent loop | ⬜     |
-| 6 — Backtest engine | ⬜     |
-| 7 — MCP server | ⬜     |
+| Phase                   | Status |
+|-------------------------|--------|
+| 0 — Skeleton           |    [x]    |
+| 1 — Data layer          |     [x]    |
+| 2 — Compute layer       | [x]    |
+| 3 — Journal         |    [x]    |
+| 4 — Brief assembly  | [x] |
+| 5 — Agent loop      | [x]    |
+| 6 — Backtest engine | [x]    |
+| 7 — MCP server      | [x]    |
 
 See [PLAN.md](PLAN.md) for the full roadmap, locked decisions, and kill conditions.
 
