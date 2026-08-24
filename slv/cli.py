@@ -1,16 +1,19 @@
 """Command-line entry point for slv.
 
 Phase 1 added `slv ingest`. Phase 2 added `slv compute`. Phase 3 added
-`slv thesis open/close` and `slv journal score`. Phase 4 adds `slv brief`.
+`slv thesis open/close` and `slv journal score`. Phase 4 added `slv brief`.
+Phase 5 added `slv agent ask`. Phase 6 adds `slv backtest run`.
 """
 from __future__ import annotations
 
 import argparse
+import json
 import math
 import sys
 
 import pandas as pd
 
+from slv import backtest as backtest_module
 from slv import brief as brief_module
 from slv import config, db, journal
 from slv.compute import indicators
@@ -195,6 +198,38 @@ def _cmd_agent_ask(args: argparse.Namespace) -> None:
     print(ask(args.question, sandbox=not args.no_sandbox))
 
 
+def _print_metrics(label: str, m: dict) -> None:
+    if not m["reportable"]:
+        print(f"{label}: only {m['n_trades']} trades (need >= {m['min_trades']}) -- not reportable")
+        return
+    print(
+        f"{label}: n={m['n_trades']}  expectancy={m['expectancy_r']:+.2f}R  "
+        f"median={m['r_median']:+.2f}R  stdev={m['r_stdev']:.2f}  "
+        f"range=[{m['r_min']:+.2f}R, {m['r_max']:+.2f}R]"
+    )
+
+
+def _cmd_backtest_run(args: argparse.Namespace) -> None:
+    with open(args.rule_file) as f:
+        rule = json.load(f)
+
+    conn = db.connect()
+    try:
+        result = backtest_module.run_backtest(
+            conn, rule, unlock_holdout=args.unlock_holdout, holdout_reason=args.reason
+        )
+        tm = result["train_metrics"]
+        _print_metrics(f"train (walk-forward, {tm['n_folds']} folds)", tm)
+
+        if result["holdout_unlocked"]:
+            print(f"*** HOLDOUT UNLOCKED *** reason: {args.reason!r} -- logged in backtest_runs")
+            _print_metrics("holdout", result["holdout_metrics"])
+        else:
+            print("holdout: sealed (not evaluated) -- pass --unlock-holdout --reason '...' to touch it")
+    finally:
+        conn.close()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="slv")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -239,6 +274,19 @@ def main(argv: list[str] | None = None) -> int:
         "faster, but not isolated from this machine; for iterating on tool logic only",
     )
 
+    backtest_parser = subparsers.add_parser("backtest", help="walk-forward backtest engine (Phase 6)")
+    backtest_sub = backtest_parser.add_subparsers(dest="backtest_command", required=True)
+    run_parser = backtest_sub.add_parser("run", help="walk-forward backtest a rule against train data")
+    run_parser.add_argument("rule_file", help="path to a JSON rule spec, e.g. rules/pullback_ema20_long.json")
+    run_parser.add_argument(
+        "--unlock-holdout",
+        action="store_true",
+        help="also evaluate the sealed holdout period -- manual, logged, meant to be rare",
+    )
+    run_parser.add_argument(
+        "--reason", default=None, help="required with --unlock-holdout; why you're touching holdout now"
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "ingest":
@@ -258,6 +306,9 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "agent":
         if args.agent_command == "ask":
             _cmd_agent_ask(args)
+    elif args.command == "backtest":
+        if args.backtest_command == "run":
+            _cmd_backtest_run(args)
 
     return 0
 

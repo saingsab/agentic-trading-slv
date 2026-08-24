@@ -108,12 +108,19 @@ CREATE TABLE IF NOT EXISTS briefs (
     facts_json TEXT NOT NULL
 );
 
+-- holdout_* columns are the audit trail for the sealed holdout (PLAN.md:
+-- "unlocking it is a manual CLI action by you, logged, and rare").
+-- holdout_metrics_json stays NULL on every run that didn't unlock it --
+-- the overwhelming majority, by design.
 CREATE TABLE IF NOT EXISTS backtest_runs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     spec_hash TEXT NOT NULL,
     params_json TEXT NOT NULL,
     train_metrics_json TEXT,
-    created_at TEXT NOT NULL
+    created_at TEXT NOT NULL,
+    holdout_unlocked INTEGER NOT NULL DEFAULT 0,
+    holdout_unlock_reason TEXT,
+    holdout_metrics_json TEXT
 );
 """
 
@@ -139,6 +146,12 @@ def _migrate(conn: sqlite3.Connection) -> None:
     columns = {row[1] for row in conn.execute("PRAGMA table_info(thesis_outcomes)")}
     if columns and "entry_price" not in columns:
         conn.execute("ALTER TABLE thesis_outcomes ADD COLUMN entry_price REAL")
+
+    bt_columns = {row[1] for row in conn.execute("PRAGMA table_info(backtest_runs)")}
+    if bt_columns and "holdout_unlocked" not in bt_columns:
+        conn.execute("ALTER TABLE backtest_runs ADD COLUMN holdout_unlocked INTEGER NOT NULL DEFAULT 0")
+        conn.execute("ALTER TABLE backtest_runs ADD COLUMN holdout_unlock_reason TEXT")
+        conn.execute("ALTER TABLE backtest_runs ADD COLUMN holdout_metrics_json TEXT")
 
 
 def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
