@@ -186,6 +186,15 @@ def brief() -> None:
         conn.close()
 
 
+def _cmd_agent_ask(args: argparse.Namespace) -> None:
+    # Lazy import: smolagents/litellm are the optional `agent` extra
+    # (Phase 5+ only per CLAUDE.md) -- every other command must keep
+    # working without them installed.
+    from slv.agent.loop import ask
+
+    print(ask(args.question, sandbox=not args.no_sandbox))
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="slv")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -219,6 +228,17 @@ def main(argv: list[str] | None = None) -> int:
     journal_sub = journal_parser.add_subparsers(dest="journal_command", required=True)
     journal_sub.add_parser("score", help="grade every unscored closed thesis on process, not P&L")
 
+    agent_parser = subparsers.add_parser("agent", help="query the tool-calling agent (Phase 5)")
+    agent_sub = agent_parser.add_subparsers(dest="agent_command", required=True)
+    ask_parser = agent_sub.add_parser("ask", help="ask a question, answered via get_indicators/get_regime/search_journal")
+    ask_parser.add_argument("question")
+    ask_parser.add_argument(
+        "--no-sandbox",
+        action="store_true",
+        help="use smolagents' local (in-process) executor instead of Docker -- "
+        "faster, but not isolated from this machine; for iterating on tool logic only",
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "ingest":
@@ -235,6 +255,9 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "journal":
         if args.journal_command == "score":
             _cmd_journal_score(args)
+    elif args.command == "agent":
+        if args.agent_command == "ask":
+            _cmd_agent_ask(args)
 
     return 0
 

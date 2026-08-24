@@ -12,6 +12,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest"]
+# Phase 5+ only (CLAUDE.md: "smolagents, Ollama. Not before.") -- not a
+# core dep, `pytest`/`slv ingest`/`compute`/`journal`/`brief` don't need it.
+agent = ["smolagents[litellm,docker]"]
 
 [project.scripts]
 slv = "slv.cli:main"
